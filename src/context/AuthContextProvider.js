@@ -17,6 +17,8 @@ export function AuthProvider({ children }) {
         setLoading(true);
         const userStored = localStorage.getItem('idUser');
         const tokenStored = localStorage.getItem('authToken');
+        if (!isTokenValid(tokenStored)) return;
+        setIsAuth(true);
 
         if (!tokenStored && !userStored) {
             setUser(null);
@@ -46,11 +48,14 @@ export function AuthProvider({ children }) {
                         localStorage.setItem('idUser', idUser);
                         setLoading(false);
                         setUser(idUser);
+                        setIsAuth(true);                        
                         router.push('/home');
                     } else {
                         console.log('Erro ao validar o token. Tente novamente.');
+                        setIsAuth(false);
                     }
                 } else {
+                    setIsAuth(false);
                     alert(response.data.message);
                 }
             }
@@ -86,9 +91,6 @@ export function AuthProvider({ children }) {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            if (response.data.message === true) {
-                setIsAuth(true);
-            }
             return {
                 isValid: response.data.message
             };

@@ -58,15 +58,15 @@ export default function Home() {
                         >
                             <PieChart width={400} height={400}>
                                 <Pie
-                                    dataKey={data.value}
+                                    dataKey="value"
                                     startAngle={180}
                                     endAngle={0}
                                     data={data}
-                                    cx={50}
-                                    cy={50}
-                                    outerRadius={80}
+                                    cx="50%"
+                                    cy="50%"
+                                    // outerRadius={80}
                                     fill="#8884d8"
-                                    label
+                                    label="Teste"
                                 />
                             </PieChart>
                         </ResponsiveContainer>

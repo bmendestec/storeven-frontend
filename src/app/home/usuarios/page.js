@@ -1,11 +1,15 @@
 'use client';
 
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/AuthContext";
-import apiClient from "@/service/server";
 import { useUsers } from "./hooks/useUser";
+import {
+  DeleteColumnOutlined,
+  DeleteFilled,
+  UserOutlined,
+} from "@ant-design/icons";
 
 
 export default function Usuarios() {
@@ -14,6 +18,7 @@ export default function Usuarios() {
   const { fetchUserData } = useUsers();
   const [users, setUsers] = useState([]);
   const [columns, setColumns] = useState([]);
+  const [actions, setActions] = useState([]);
 
   const fetchData = async () => {
     const data = await fetchUserData();
@@ -24,11 +29,13 @@ export default function Usuarios() {
       text: name,
       value: name
     }));
+
     const filterEmail = [...new Set(data.map(user => user.email))];
     const dynamicFilterEmails = filterEmail.map(email => ({
       text: email,
       value: email
     }));
+
     const filterGenders = [...new Set(data.map(user => user.gender))];
     const dynamicFilterGenders = filterGenders.map(gender => ({
       text: gender,
@@ -87,7 +94,13 @@ export default function Usuarios() {
         onFilter: (value, record) => record.gender.startsWith(value),
         width: '30%',
       },
-    ])
+      {
+        title: 'Action',
+        dataIndex: '',
+        key: 'x',
+        render: () => <a href="/home">Delete</a>,
+      },
+    ]);
   }
 
   const onChange = (pagination, filters, sorter, extra) => {
@@ -99,21 +112,21 @@ export default function Usuarios() {
   }, [])
 
   useEffect(() => {
-    if (!isAuth) {
+    const token = localStorage.getItem('authToken');
+    if (!token && !isAuth) {
       router.push('/');
     }
   }, [isAuth]);
 
-  console.log(users);
   return (
     <Table
+
       columns={columns}
       dataSource={users}
       style={{
         margin: '50px'
       }}
       onChange={onChange}
-
     />
   );
 }

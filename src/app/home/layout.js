@@ -80,7 +80,7 @@ export default function HomeLayout({ children }) {
                         </Button>
                     </div>
                 </Header>
-                <Content style={{ margin: '0 16px' }}>
+                <Content style={{ margin: '0 16px', maxHeight: '1200px' }}>
                     {children}
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
