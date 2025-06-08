@@ -112,7 +112,7 @@ export function AuthProvider({ children }) {
             localStorage.removeItem('authToken');
             localStorage.removeItem('userId');
             setLoading(false);
-            router.push('/login');
+            router.push('/');
         }
     };
 

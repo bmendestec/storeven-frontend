@@ -1,104 +1,90 @@
 'use client';
 
-import Layout, { Content, Footer, Header } from "antd/es/layout/layout";
-import Sider from "antd/es/layout/Sider";
-import { Button, Menu, theme } from "antd";
 import { useEffect, useState } from "react";
-import {
-    ArrowUpOutlined,
-    DesktopOutlined,
-    FileOutlined,
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    PieChartOutlined,
-    SettingOutlined,
-    TeamOutlined,
-    UserAddOutlined,
-    UserOutlined,
-} from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/AuthContext";
+import { Button, Flex, Splitter, Switch, Typography } from "antd";
+import { Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Content } from "antd/es/layout/layout";
+
+const Desc = props => (
+    <Flex justify="center" align="center" style={{ height: '100%' }}>
+        <Typography.Title type="secondary" level={5} style={{ whiteSpace: 'nowrap' }}>
+            {props.text}
+        </Typography.Title>
+    </Flex>
+);
 
 export default function Home() {
-    const [collapsed, setCollapsed] = useState(false);
-    const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
-    const [openLogin, setOpenLogin] = useState(null);
     const router = useRouter();
-    const { isAuth, logout } = useAuth();
+    const { isAuth, user } = useAuth();
+    const [sizes, setSizes] = useState(['50%', '50%']);
+    const [enabled, setEnabled] = useState(true);
 
     useEffect(() => {
         if (!isAuth) {
-            router.push('/login');
+            router.push('/');
         }
     }, [isAuth]);
-    return (
-        // <Login />
-        <Layout style={{ minHeight: '100vh' }}>
-            <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
-                <div className="demo-logo-vertical" />
-                <Menu
-                    theme="dark"
-                    // defaultSelectedKeys={['/login']}
-                    mode="inline"
-                // items={items}
-                />
-            </Sider>
-            <Layout>
-                <Header style={{ padding: 0, background: colorBgContainer }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button
-                            type="text"
-                            variant="primary"
-                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                            onClick={() => setCollapsed(!collapsed)}
-                            style={{
-                                fontSize: '16px',
-                                width: 64,
-                                height: 64,
-                            }}
-                        />
-                        <Button
-                            onClick={logout}
-                            style={{
-                                fontSize: '16px',
-                                width: 64,
-                                height: 64,
-                            }}
-                        >Logout
-                        </Button>
-                    </div>
-                </Header>
-                <Content style={{ margin: '0 16px' }}>
-                    <div className='d-flex flex-column align-items-center' style={{ margin: '100px' }}>
-                        <div className="row justify-content-center">
-                            <div className='col-md-4' style={{ height: '110px', width: '120px' }}>
-                                <Button
-                                    variant='primary'
-                                    onClick={() => { router.push('/usuarios') }}>
-                                    <UserAddOutlined size={60} />
-                                    Users
-                                </Button>
-                            </div>
-                            <div className='col-md-4' style={{ height: '110px', width: '120px' }}>
-                                <Button variant='primary'
-                                    onClick={() => { router.push('/tasks') }}><ArrowUpOutlined size={60} />Tasks</Button>
-                            </div>
-                            <div className='col-md-4' style={{ height: '110px', width: '120px' }}>
-                                <Button
-                                    variant='primary'
-                                    onClick={() => { router.push('/test-navbar') }}>
-                                    <SettingOutlined size={60} />
-                                    Settings
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </Content>
-                <Footer style={{ textAlign: 'center' }}>
-                    Storage and Vendors Management ©{new Date().getFullYear()} Created by Bruno Mendes
-                </Footer>
-            </Layout>
-        </Layout >
 
+    const data = [
+        { name: 'Group A', value: 400 },
+        { name: 'Group B', value: 300 },
+        { name: 'Group C', value: 300 },
+        { name: 'Group D', value: 200 },
+        { name: 'Group E', value: 278 },
+        { name: 'Group F', value: 189 },
+    ];
+
+    return (
+        <>
+            <div>
+                <h1>Welcome to Home {user}</h1>
+            </div>
+            <Flex vertical gap="midle">
+                <Splitter
+                    onResize={setSizes}
+                    style={{
+                        height: 200,
+                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'
+                    }}
+                >
+                    <Splitter.Panel size={sizes[0]} resizable={enabled}>
+                        <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                            maxHeight={100}
+                            minHeight={100}
+                        >
+                            <PieChart width={400} height={400}>
+                                <Pie
+                                    dataKey={data.value}
+                                    startAngle={180}
+                                    endAngle={0}
+                                    data={data}
+                                    cx={50}
+                                    cy={50}
+                                    outerRadius={80}
+                                    fill="#8884d8"
+                                    label
+                                />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </Splitter.Panel>
+                    <Splitter.Panel size={sizes[1]}>
+                        <Desc text="Second" />
+                    </Splitter.Panel>
+                </Splitter>
+                <Flex gap="midle" justify="space-between">
+                    <Switch
+                        value={enabled}
+                        onChange={() => setEnabled(!enabled)}
+                        checkedChildren="Enable"
+                        unCheckedChildren="Disabled"
+                    />
+                    <Button onClick={() => setSizes(['50%', '50%'])}>Reset</Button>
+                </Flex>
+            </Flex>
+        </>
     );
 }
