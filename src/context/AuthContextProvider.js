@@ -3,21 +3,6 @@
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import apiClient from '../service/server';
-import Layout, { Content, Footer, Header } from "antd/es/layout/layout";
-import Sider from "antd/es/layout/Sider";
-import { Button, Menu, theme } from "antd";
-import {
-    ArrowUpOutlined,
-    DesktopOutlined,
-    FileOutlined,
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    PieChartOutlined,
-    SettingOutlined,
-    TeamOutlined,
-    UserAddOutlined,
-    UserOutlined,
-} from "@ant-design/icons";
 
 export const AuthContext = createContext();
 
@@ -25,8 +10,6 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(null);
     const [isAuth, setIsAuth] = useState(null);
-    const [collapsed, setCollapsed] = useState(false);
-    const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
 
     const router = useRouter();
 
@@ -136,49 +119,7 @@ export function AuthProvider({ children }) {
     return (
         <>
             <AuthContext.Provider value={{ user, login, logout, loading, isAuth }}>
-                <Layout style={{ minHeight: '100vh' }}>
-                    <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
-                        <div className="demo-logo-vertical" />
-                        <Menu
-                            theme="dark"
-                            // defaultSelectedKeys={['/login']}
-                            mode="inline"
-                        // items={items}
-                        />
-                    </Sider>
-                    <Layout>
-                        <Header style={{ padding: 0, background: colorBgContainer }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Button
-                                    type="text"
-                                    variant="primary"
-                                    icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                                    onClick={() => setCollapsed(!collapsed)}
-                                    style={{
-                                        fontSize: '16px',
-                                        width: 64,
-                                        height: 64,
-                                    }}
-                                />
-                                <Button
-                                    onClick={logout}
-                                    style={{
-                                        fontSize: '16px',
-                                        width: 64,
-                                        height: 64,
-                                    }}
-                                >Logout
-                                </Button>
-                            </div>
-                        </Header>
-                        <Content style={{ margin: '0 16px' }}>
-                            {children}
-                        </Content>
-                        <Footer style={{ textAlign: 'center' }}>
-                            Storage and Vendors Management ©{new Date().getFullYear()} Created by Bruno Mendes
-                        </Footer>
-                    </Layout>
-                </Layout>
+                {children}
             </AuthContext.Provider>
         </>
     );
