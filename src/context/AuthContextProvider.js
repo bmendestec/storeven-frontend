@@ -18,7 +18,6 @@ export function AuthProvider({ children }) {
         const userStored = localStorage.getItem('idUser');
         const tokenStored = localStorage.getItem('authToken');
         if (!isTokenValid(tokenStored)) return;
-        setIsAuth(true);
 
         if (!tokenStored && !userStored) {
             setUser(null);

@@ -21,12 +21,6 @@ export default function Home() {
     const [sizes, setSizes] = useState(['50%', '50%']);
     const [enabled, setEnabled] = useState(true);
 
-    useEffect(() => {
-        if (!isAuth) {
-            router.push('/');
-        }
-    }, [isAuth]);
-
     const data = [
         { name: 'Group A', value: 400 },
         { name: 'Group B', value: 300 },

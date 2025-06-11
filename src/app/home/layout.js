@@ -15,18 +15,13 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/AuthContext";
+import ProtectedRoute from "@/context/ProtectedRoute";
 
 export default function HomeLayout({ children }) {
     const [collapsed, setCollapsed] = useState(false);
     const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
     const router = useRouter();
-    const { isAuth, logout } = useAuth();
-
-    useEffect(() => {
-        if (!isAuth) {
-            router.push('/');
-        }
-    }, [isAuth]);
+    const { logout } = useAuth();
 
     const items = [
         { key: '/home', label: 'Home', icon: <HomeOutlined /> },
@@ -40,54 +35,55 @@ export default function HomeLayout({ children }) {
     }
 
     return (
-        <Layout style={{ minHeight: '100vh' }}>
-            <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
-                {/* <div className="demo-logo-vertical" /> */}
-                <Menu
-                    theme="dark"
-                    defaultSelectedKeys={['/home']}
-                    mode="inline"
-                    items={items}
-                    style={{
-                        marginTop: '20px'
-                    }}
-                    onClick={handleMenuClick}
-                />
-            </Sider>
-            <Layout>
-                <Header style={{ padding: 0, background: colorBgContainer }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button
-                            type="text"
-                            variant="primary"
-                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                            onClick={() => setCollapsed(!collapsed)}
-                            style={{
-                                fontSize: '16px',
-                                width: 64,
-                                height: 64,
-                            }}
-                        />
-                        <Button
-                            onClick={logout}
-                            style={{
-                                fontSize: '16px',
-                                width: 64,
-                                height: 64,
-                            }}
-                        >
-                            <LogoutOutlined size={60}/>
-                        </Button>
-                    </div>
-                </Header>
-                <Content style={{ margin: '0 16px', maxHeight: '1200px' }}>
-                    {children}
-                </Content>
-                <Footer style={{ textAlign: 'center' }}>
-                    Storage and Vendors Management ©{new Date().getFullYear()} Created by Bruno Mendes
-                </Footer>
-            </Layout>
-        </Layout >
-
+        <ProtectedRoute>
+            <Layout style={{ minHeight: '100vh' }}>
+                <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
+                    {/* <div className="demo-logo-vertical" /> */}
+                    <Menu
+                        theme="dark"
+                        defaultSelectedKeys={['/home']}
+                        mode="inline"
+                        items={items}
+                        style={{
+                            marginTop: '20px'
+                        }}
+                        onClick={handleMenuClick}
+                    />
+                </Sider>
+                <Layout>
+                    <Header style={{ padding: 0, background: colorBgContainer }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Button
+                                type="text"
+                                variant="primary"
+                                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                                onClick={() => setCollapsed(!collapsed)}
+                                style={{
+                                    fontSize: '16px',
+                                    width: 64,
+                                    height: 64,
+                                }}
+                            />
+                            <Button
+                                onClick={logout}
+                                style={{
+                                    fontSize: '16px',
+                                    width: 64,
+                                    height: 64,
+                                }}
+                            >
+                                <LogoutOutlined size={60} />
+                            </Button>
+                        </div>
+                    </Header>
+                    <Content style={{ margin: '0 16px', maxHeight: '1200px' }}>
+                        {children}
+                    </Content>
+                    <Footer style={{ textAlign: 'center' }}>
+                        Storage and Vendors Management ©{new Date().getFullYear()} Created by Bruno Mendes
+                    </Footer>
+                </Layout>
+            </Layout >
+        </ProtectedRoute>
     );
 }

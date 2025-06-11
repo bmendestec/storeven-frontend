@@ -34,9 +34,25 @@ export function useUsers() {
         }
     }
 
+    const handleDeleteUser = (id, setReloadPanel) => {
+        if (id) {
+            apiClient.delete(`/usuarios/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+                }
+            }).then(() => {
+                setUser(user.filter((user) => user.id !== id));
+                setReloadPanel(true);
+            }).catch((error) => {
+                console.log('Erro ao deletar usuário:', error.message);
+            })
+        }
+    }
+
     return {
         user,
         loading,
-        fetchUserData
+        fetchUserData,
+        handleDeleteUser
     }
 }

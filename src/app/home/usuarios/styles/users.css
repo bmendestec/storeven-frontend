@@ -1,0 +1,35 @@
+th, td {
+    width: 20%;
+    text-align: center;
+    padding: 12px;
+    border: 1px solid #ddd
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+tr:hover, th:hover {
+    background-color: #f1f1f1;
+}
+
+button {
+    background-color: rgb(214, 31, 31);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: rgb(250, 56, 56);
+}
+
+button:active {
+    background-color: rgb(241, 171, 171);
+}
