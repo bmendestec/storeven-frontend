@@ -3,7 +3,7 @@
 import Layout, { Content, Footer, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { Button, Menu, theme } from "antd";
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import {
     HomeOutlined,
     LogoutOutlined,
@@ -25,7 +25,7 @@ export default function HomeLayout({ children }) {
 
     const items = [
         { key: '/home', label: 'Home', icon: <HomeOutlined /> },
-        { key: '/home/usuarios', label: 'Users', icon: <UserOutlined /> },
+        { key: 'admin', label: 'Admin', icon: <UserOutlined />, children: [{ key: '/home/usuarios', label: 'Users' }] },
         { key: '/home/products', label: 'Products', icon: <ProductOutlined /> },
         { key: '/home/settings', label: 'Settings', icon: <SettingOutlined /> }
     ];
