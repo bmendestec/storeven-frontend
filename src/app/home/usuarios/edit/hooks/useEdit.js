@@ -42,21 +42,39 @@ export function useEdit({ userId } = {}) {
     };
 
     const handleChange = (e) => {
-        setUser({
-            ...user,
-            [e.target.name]: e.target.value
-        });
+        if (e && e.target) {
+            setUser({
+                ...user,
+                [e.target.name]: e.target.value
+            });
 
-        if (e.target.name === 'birth_date') {
-            const birth_date = new Date(e.target.value);
-            const today = new Date();
-            const age = today.getFullYear() - birth_date.getFullYear();
-            const monthDiff = today.getMonth() - birth_date.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth_date.getDate())) {
-                setUser({ ...user, birth_date: e.target.value, age: age - 1 });
-            } else {
-                setUser({ ...user, birth_date: e.target.value, age: age });
+            if (e.target.name === 'birth_date') {
+                const birth_date = new Date(e.target.value);
+                const today = new Date();
+                const age = today.getFullYear() - birth_date.getFullYear();
+                const monthDiff = today.getMonth() - birth_date.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth_date.getDate())) {
+                    setUser({ ...user, birth_date: e.target.value, age: age - 1 });
+                } else {
+                    setUser({ ...user, birth_date: e.target.value, age: age });
+                }
             }
+        } else {
+            const fieldName = "birth_date";
+            const birth_date = e ? e.toISOString() : '';
+            const today = new Date();
+            const age = today.getFullYear() - new Date(birth_date).getFullYear();
+            const monthDiff = today.getMonth() - new Date(birth_date).getMonth();
+            const calculatedAge =
+                monthDiff < 0 || (monthDiff === 0 && today.getDate() < new Date(birth_date).getDate())
+                    ? age - 1
+                    : age;
+
+            setUser({
+                ...user,
+                [fieldName]: birth_date,
+                age: calculatedAge
+            })
         }
     }
 

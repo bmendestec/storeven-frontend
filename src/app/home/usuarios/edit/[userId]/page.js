@@ -16,38 +16,36 @@ export default function EditUser() {
             <div style={{
                 margin: '100px'
             }}>
-                <Form
-                    labelCol={{ span: 4 }}
-                    wrapperCol={{ span: 14 }}
-                    layout="horizontal"
-                    style={{ maxWidth: 600 }} 
-                    method="post"
-                    onSubmit={handleSubmit}
-                >
-                    <Form.Item label="Name">
-                        <Input value={user.name} onChange={handleChange} />
-                    </Form.Item>
-                    <Form.Item label="E-mail">
-                        <Input value={user.email} onChange={handleChange} />
-                    </Form.Item>
-                    <Form.Item label="Birth date/Age">
-                        <Space>
-                            <DatePicker value={dayjs(birthDate)} onChange={handleChange} />
-                            <Input value={user.age} onChange={handleChange} />
-                        </Space>
-                    </Form.Item>
-                    <Form.Item label="Gender">
-                        <Radio.Group value={user.gender} onChange={handleChange} > 
-                            <Radio value="Masculino">Male</Radio>
-                            <Radio value="Feminino">Female</Radio>
-                        </Radio.Group>
-                    </Form.Item>
-                    <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-                        <Button type="primary" htmlType="submit" onClick={() => {handleSubmit}}>
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </Form>
+                <div className="w-full max-w-md px-4">
+                    <form
+                        method="post"
+                        onSubmit={handleSubmit}
+                    >
+                        <Form.Item label="Name">
+                            <Input name="name" value={user.name} onChange={handleChange} />
+                        </Form.Item>
+                        <Form.Item label="E-mail">
+                            <Input name="email" value={user.email} onChange={handleChange} />
+                        </Form.Item>
+                        <Form.Item label="Birth date/Age">
+                            <Space>
+                                <DatePicker name="birth_date" value={dayjs(birthDate)} onChange={handleChange} />
+                                <Input name="age" value={user.age} onChange={handleChange} />
+                            </Space>
+                        </Form.Item>
+                        <Form.Item label="Gender">
+                            <Radio.Group name="gender" value={user.gender} onChange={handleChange} >
+                                <Radio value="Masculino">Male</Radio>
+                                <Radio value="Feminino">Female</Radio>
+                            </Radio.Group>
+                        </Form.Item>
+                        <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
+                            <Button type="primary" htmlType="submit" onClick={() => { handleSubmit }}>
+                                Submit
+                            </Button>
+                        </Form.Item>
+                    </form>
+                </div>
             </div>
         </>
     )
