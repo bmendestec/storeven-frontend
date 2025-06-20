@@ -21,19 +21,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - **Font Optimization**: Uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to load [Geist](https://vercel.com/font), a sleek font family by Vercel.
 - **Auto-updating Pages**: Edit `app/page.js` and see changes reflected instantly.
 - **Cross-Platform Development**: Supports `npm`, `yarn`, `pnpm`, and `bun` for development.
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
