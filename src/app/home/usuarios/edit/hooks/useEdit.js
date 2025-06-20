@@ -42,55 +42,49 @@ export function useEdit({ userId } = {}) {
     };
 
     const handleChange = (e) => {
-        if (e && e.target) {
-            setUser({
-                ...user,
-                [e.target.name]: e.target.value
-            });
+        const { name, value } = e.target;
+        setUser((prevUser) => ({
+            ...prevUser,
+            [name]: value,
+        }));
 
-            if (e.target.name === 'birth_date') {
-                const birth_date = new Date(e.target.value);
-                const today = new Date();
-                const age = today.getFullYear() - birth_date.getFullYear();
-                const monthDiff = today.getMonth() - birth_date.getMonth();
-                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth_date.getDate())) {
-                    setUser({ ...user, birth_date: e.target.value, age: age - 1 });
-                } else {
-                    setUser({ ...user, birth_date: e.target.value, age: age });
-                }
-            }
-        } else {
-            const fieldName = "birth_date";
-            const birth_date = e ? e.toISOString() : '';
+        if (name === "birth_date") {
             const today = new Date();
-            const age = today.getFullYear() - new Date(birth_date).getFullYear();
-            const monthDiff = today.getMonth() - new Date(birth_date).getMonth();
+            const age = today.getFullYear() - new Date(e.target.value).getFullYear();
+            const monthDiff = today.getMonth() - new Date(e.target.value).getMonth();
             const calculatedAge =
-                monthDiff < 0 || (monthDiff === 0 && today.getDate() < new Date(birth_date).getDate())
+                monthDiff < 0 || (monthDiff === 0 && today.getDate() < new Date(e.target.value).getDate())
                     ? age - 1
                     : age;
 
-            setUser({
-                ...user,
-                [fieldName]: birth_date,
+            setUser((prevUser) => ({
+                ...prevUser,
                 age: calculatedAge
-            })
+            }));
         }
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {        
 
-        apiClient.put(`/usuarios/${userId}`, user, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        try {
+            const response = await apiClient.put(`/usuarios/${user.id}`, user, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+                }
+            })   
+            
+            if (response.status === 200) {
+                setUser(response.data.user);
             }
-        }).then((response) => {
-            console.log('User edited:', response.data);
-            router.push('/home/usuarios');
-        }).catch((error) => {
-            console.log('User edit error:', error.message);
-        });
+        } catch (error) {
+                console.log('User edit error:', error.message);            
+        }
+        
+        // .then((response) => {
+        //     console.log('User edited:', response.data);
+        //     router.push('/home/usuarios');
+        // }).catch((error) => {
+        // });
     };
 
     return {
